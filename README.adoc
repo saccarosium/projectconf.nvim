@@ -1,0 +1,49 @@
+= 💼 Projectconf.nvim
+
+Manage project specific settings without polluting your project directory.
+
+== Installation
+
+* Most package managers
+
+[,lua]
+----
+"saccarosium/projectconf.nvim"
+----
+
+* https://github.com/folke/lazy.nvim[Lazy.nvim]
+
+[,lua]
+----
+{ "saccarosium/projectconf.nvim", lazy = false }
+----
+
+== Configuration
+
+The configuration is a table with the keys as the path to the project and the
+value as either a function or a string.
+
+NOTE: Environment variables and shortcuts (such as `~`) will be expanded. This
+work also over on Windows
+
+[,lua]
+----
+require("projectconf").setup({
+  -- When your cwd is equal to home it will call this function
+  ["$HOME"] = function()
+    vim.opt_local.expandtab = false
+    vim.cmd.colorscheme = "gruvbox"
+  end,
+  -- When your cwd is equal to xdg_config_home it will require
+  -- the lua module with the name "work_project"
+  ["$XDG_CONFIG_HOME/work_project"] = "work_project"
+})
+----
+
+== Why
+
+I needed a simple but yet effective way to have project specific modifications.
+I've tried to use `:h exrc` but I found that, as a heavy `:h ftplugin` user, my
+modification where overwritten by other events, since I believe `.nvim.lua` is
+sourced only on `:h VIMENTER`. So I come up with this plugin that will maintain
+your modification and will not pollute your project root directory.
